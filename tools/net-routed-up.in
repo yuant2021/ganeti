@@ -80,13 +80,14 @@ if [ -n "$IP6_ROUTED" ]; then
     done
 fi
 
-# IPv6 default gateway for the interface (optional)
-if [ -n "$GATEWAY6" ]; then
-    if [ -n "$LINK" ]; then
-        ip -6 route replace default via $GATEWAY6 table $LINK proto static dev $INTERFACE
-    else
-        ip -6 route replace default via $GATEWAY6 proto static dev $INTERFACE
-    fi
+# Bind routed IPv4 gateway address on the tap interface
+if [ -n "$ROUTED_GATEWAY" ]; then
+    ip addr replace $ROUTED_GATEWAY/32 dev $INTERFACE
+fi
+
+# Bind routed IPv6 gateway address on the tap interface
+if [ -n "$ROUTED_GATEWAY6" ]; then
+    ip -6 addr replace $ROUTED_GATEWAY6/128 dev $INTERFACE
 fi
 
 # Allow routing and arp proxying, or ndp proxying (IPv6)

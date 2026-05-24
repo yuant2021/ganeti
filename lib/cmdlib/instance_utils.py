@@ -1234,7 +1234,8 @@ def ComputeNics(op, cluster, default_ip, cfg, ec_id):
     vlan = nic.get(constants.INIC_VLAN, None)
     ip_routed = nic.get(constants.INIC_IP_ROUTED, None)
     ip6_routed = nic.get(constants.INIC_IP6_ROUTED, None)
-    gateway6 = nic.get(constants.INIC_GATEWAY6, None)
+    routed_gw = nic.get(constants.INIC_ROUTED_GATEWAY, None)
+    routed_gw6 = nic.get(constants.INIC_ROUTED_GATEWAY6, None)
     rpf = nic.get(constants.INIC_RPF, None)
 
     if net is None or net.lower() == constants.VALUE_NONE:
@@ -1302,8 +1303,10 @@ def ComputeNics(op, cluster, default_ip, cfg, ec_id):
       nicparams[constants.NIC_IP_ROUTED] = ip_routed
     if ip6_routed:
       nicparams[constants.NIC_IP6_ROUTED] = ip6_routed
-    if gateway6:
-      nicparams[constants.NIC_GATEWAY6] = gateway6
+    if routed_gw:
+      nicparams[constants.NIC_ROUTED_GATEWAY] = routed_gw
+    if routed_gw6:
+      nicparams[constants.NIC_ROUTED_GATEWAY6] = routed_gw6
     if rpf:
       nicparams[constants.NIC_RPF] = rpf
 

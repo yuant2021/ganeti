@@ -66,13 +66,12 @@ if [ -n "$IP6_ROUTED" ]; then
     done
 fi
 
-# Clean up IPv6 default gateway route
-if [ -n "$GATEWAY6" ]; then
-    if [ -n "$LINK" ]; then
-        ip -6 route del default via $GATEWAY6 table $LINK dev $INTERFACE 2>/dev/null || true
-    else
-        ip -6 route del default via $GATEWAY6 dev $INTERFACE 2>/dev/null || true
-    fi
+# Clean up routed gateway addresses from the tap interface
+if [ -n "$ROUTED_GATEWAY" ]; then
+    ip addr del $ROUTED_GATEWAY/32 dev $INTERFACE 2>/dev/null || true
+fi
+if [ -n "$ROUTED_GATEWAY6" ]; then
+    ip -6 addr del $ROUTED_GATEWAY6/128 dev $INTERFACE 2>/dev/null || true
 fi
 
 # Clean up policy routing rules

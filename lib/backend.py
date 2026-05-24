@@ -4354,9 +4354,12 @@ def OSEnvironment(instance, inst_os, debug=0):
     if nic.nicparams.get(constants.NIC_IP6_ROUTED):
       result["NIC_%d_IP6_ROUTED" % idx] = \
         nic.nicparams[constants.NIC_IP6_ROUTED]
-    if nic.nicparams.get(constants.NIC_GATEWAY6):
-      result["NIC_%d_GATEWAY6" % idx] = \
-        nic.nicparams[constants.NIC_GATEWAY6]
+    if nic.nicparams.get(constants.NIC_ROUTED_GATEWAY):
+      result["NIC_%d_ROUTED_GATEWAY" % idx] = \
+        nic.nicparams[constants.NIC_ROUTED_GATEWAY]
+    if nic.nicparams.get(constants.NIC_ROUTED_GATEWAY6):
+      result["NIC_%d_ROUTED_GATEWAY6" % idx] = \
+        nic.nicparams[constants.NIC_ROUTED_GATEWAY6]
     if nic.nicparams.get(constants.NIC_RPF):
       result["NIC_%d_RPF" % idx] = nic.nicparams[constants.NIC_RPF]
     if nic.netinfo:

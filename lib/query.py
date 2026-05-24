@@ -1894,7 +1894,8 @@ def _GetInstanceNetworkFields():
 
   nic_ip_routed_fn = _GetInstNicParamOpt(constants.NIC_IP_ROUTED)
   nic_ip6_routed_fn = _GetInstNicParamOpt(constants.NIC_IP6_ROUTED)
-  nic_gateway6_fn = _GetInstNicParamOpt(constants.NIC_GATEWAY6)
+  nic_routed_gw_fn = _GetInstNicParamOpt(constants.NIC_ROUTED_GATEWAY)
+  nic_routed_gw6_fn = _GetInstNicParamOpt(constants.NIC_ROUTED_GATEWAY6)
   nic_rpf_fn = _GetInstNicParamOpt(constants.NIC_RPF)
 
   fields = [
@@ -1944,10 +1945,15 @@ def _GetInstanceNetworkFields():
      IQ_CONFIG, 0,
      lambda ctx, inst: [nicp.get(constants.NIC_IP6_ROUTED, None)
                         for nicp in ctx.inst_nicparams]),
-    (_MakeField("nic.gateways6", "NIC_Gateways6", QFT_OTHER,
-                "List containing each interface's IPv6 gateway"),
+    (_MakeField("nic.routed.gateways", "NIC_RoutedGWs", QFT_OTHER,
+                "List containing each interface's routed IPv4 gateway"),
      IQ_CONFIG, 0,
-     lambda ctx, inst: [nicp.get(constants.NIC_GATEWAY6, None)
+     lambda ctx, inst: [nicp.get(constants.NIC_ROUTED_GATEWAY, None)
+                        for nicp in ctx.inst_nicparams]),
+    (_MakeField("nic.routed.gateways6", "NIC_RoutedGWs6", QFT_OTHER,
+                "List containing each interface's routed IPv6 gateway"),
+     IQ_CONFIG, 0,
+     lambda ctx, inst: [nicp.get(constants.NIC_ROUTED_GATEWAY6, None)
                         for nicp in ctx.inst_nicparams]),
     (_MakeField("nic.rpfs", "NIC_RPFs", QFT_OTHER,
                 "List containing each interface's rp_filter setting"),
@@ -1996,9 +2002,14 @@ def _GetInstanceNetworkFields():
       (_MakeField("nic.ip6.routed/%s" % i, "NicIP6Routed/%s" % i, QFT_TEXT,
                   "Routed IPv6 addresses of %s network interface" % numtext),
        IQ_CONFIG, 0, _GetInstNic(i, nic_ip6_routed_fn)),
-      (_MakeField("nic.gateway6/%s" % i, "NicGateway6/%s" % i, QFT_TEXT,
-                  "IPv6 gateway of %s network interface" % numtext),
-       IQ_CONFIG, 0, _GetInstNic(i, nic_gateway6_fn)),
+      (_MakeField("nic.routed.gateway/%s" % i,
+                  "NicRoutedGW/%s" % i, QFT_TEXT,
+                  "Routed IPv4 gateway of %s network interface" % numtext),
+       IQ_CONFIG, 0, _GetInstNic(i, nic_routed_gw_fn)),
+      (_MakeField("nic.routed.gateway6/%s" % i,
+                  "NicRoutedGW6/%s" % i, QFT_TEXT,
+                  "Routed IPv6 gateway of %s network interface" % numtext),
+       IQ_CONFIG, 0, _GetInstNic(i, nic_routed_gw6_fn)),
       (_MakeField("nic.rpf/%s" % i, "NicRPF/%s" % i, QFT_TEXT,
                   "rp_filter setting of %s network interface" % numtext),
        IQ_CONFIG, 0, _GetInstNic(i, nic_rpf_fn)),

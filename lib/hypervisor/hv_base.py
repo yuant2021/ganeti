@@ -257,8 +257,11 @@ def ConfigureNIC(cmd, instance, seq, nic, tap, extra_env=None):
   if nic.nicparams.get(constants.NIC_IP6_ROUTED):
     env["IP6_ROUTED"] = nic.nicparams[constants.NIC_IP6_ROUTED]
 
-  if nic.nicparams.get(constants.NIC_GATEWAY6):
-    env["GATEWAY6"] = nic.nicparams[constants.NIC_GATEWAY6]
+  if nic.nicparams.get(constants.NIC_ROUTED_GATEWAY):
+    env["ROUTED_GATEWAY"] = nic.nicparams[constants.NIC_ROUTED_GATEWAY]
+
+  if nic.nicparams.get(constants.NIC_ROUTED_GATEWAY6):
+    env["ROUTED_GATEWAY6"] = nic.nicparams[constants.NIC_ROUTED_GATEWAY6]
 
   if nic.nicparams.get(constants.NIC_RPF):
     env["RPF"] = nic.nicparams[constants.NIC_RPF]
@@ -324,8 +327,11 @@ def DeConfigureNIC(cmd, instance, seq, nic, tap):
   if nic.nicparams.get(constants.NIC_IP6_ROUTED):
     env["IP6_ROUTED"] = nic.nicparams[constants.NIC_IP6_ROUTED]
 
-  if nic.nicparams.get(constants.NIC_GATEWAY6):
-    env["GATEWAY6"] = nic.nicparams[constants.NIC_GATEWAY6]
+  if nic.nicparams.get(constants.NIC_ROUTED_GATEWAY):
+    env["ROUTED_GATEWAY"] = nic.nicparams[constants.NIC_ROUTED_GATEWAY]
+
+  if nic.nicparams.get(constants.NIC_ROUTED_GATEWAY6):
+    env["ROUTED_GATEWAY6"] = nic.nicparams[constants.NIC_ROUTED_GATEWAY6]
 
   if nic.nicparams.get(constants.NIC_RPF):
     env["RPF"] = nic.nicparams[constants.NIC_RPF]

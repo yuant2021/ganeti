@@ -645,8 +645,12 @@ class XenHypervisor(hv_base.BaseHypervisor):
       data.write("IP_ROUTED=%s\n" % nic.nicparams[constants.NIC_IP_ROUTED])
     if nic.nicparams.get(constants.NIC_IP6_ROUTED):
       data.write("IP6_ROUTED=%s\n" % nic.nicparams[constants.NIC_IP6_ROUTED])
-    if nic.nicparams.get(constants.NIC_GATEWAY6):
-      data.write("GATEWAY6=%s\n" % nic.nicparams[constants.NIC_GATEWAY6])
+    if nic.nicparams.get(constants.NIC_ROUTED_GATEWAY):
+      data.write("ROUTED_GATEWAY=%s\n" %
+                 nic.nicparams[constants.NIC_ROUTED_GATEWAY])
+    if nic.nicparams.get(constants.NIC_ROUTED_GATEWAY6):
+      data.write("ROUTED_GATEWAY6=%s\n" %
+                 nic.nicparams[constants.NIC_ROUTED_GATEWAY6])
     if nic.nicparams.get(constants.NIC_RPF):
       data.write("RPF=%s\n" % nic.nicparams[constants.NIC_RPF])
 

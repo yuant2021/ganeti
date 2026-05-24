@@ -397,7 +397,8 @@ $(buildObject "INicParams" "inic"
   , optionalField $ simpleField C.inicNetwork  [t| NonEmptyString |]
   , optionalField $ simpleField C.inicIpRouted [t| String         |]
   , optionalField $ simpleField C.inicIp6Routed [t| String        |]
-  , optionalField $ simpleField C.inicGateway6 [t| String         |]
+  , optionalField $ simpleField C.inicRoutedGateway  [t| String   |]
+  , optionalField $ simpleField C.inicRoutedGateway6 [t| String  |]
   , optionalField $ simpleField C.inicRpf     [t| String         |]
   ])
 

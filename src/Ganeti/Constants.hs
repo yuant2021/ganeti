@@ -2529,8 +2529,11 @@ nicIpRouted = "ip-routed"
 nicIp6Routed :: String
 nicIp6Routed = "ip6-routed"
 
-nicGateway6 :: String
-nicGateway6 = "gateway6"
+nicRoutedGateway :: String
+nicRoutedGateway = "routed-gateway"
+
+nicRoutedGateway6 :: String
+nicRoutedGateway6 = "routed-gateway6"
 
 nicRpf :: String
 nicRpf = "rpf"
@@ -2542,7 +2545,8 @@ nicsParameterTypes =
                 (nicVlan, vtypeString),
                 (nicIpRouted, vtypeString),
                 (nicIp6Routed, vtypeString),
-                (nicGateway6, vtypeString),
+                (nicRoutedGateway, vtypeString),
+                (nicRoutedGateway6, vtypeString),
                 (nicRpf, vtypeString)]
 
 nicsParameters :: FrozenSet String
@@ -2662,8 +2666,11 @@ inicIpRouted = "ip-routed"
 inicIp6Routed :: String
 inicIp6Routed = "ip6-routed"
 
-inicGateway6 :: String
-inicGateway6 = "gateway6"
+inicRoutedGateway :: String
+inicRoutedGateway = "routed-gateway"
+
+inicRoutedGateway6 :: String
+inicRoutedGateway6 = "routed-gateway6"
 
 inicRpf :: String
 inicRpf = "rpf"
@@ -2680,7 +2687,8 @@ inicParamsTypes =
                 (inicVlan, VTypeMaybeString),
                 (inicIpRouted, VTypeMaybeString),
                 (inicIp6Routed, VTypeMaybeString),
-                (inicGateway6, VTypeMaybeString),
+                (inicRoutedGateway, VTypeMaybeString),
+                (inicRoutedGateway6, VTypeMaybeString),
                 (inicRpf, VTypeMaybeString)]
 
 inicParams :: FrozenSet String
@@ -4382,7 +4390,8 @@ niccDefaults =
   , (nicVlan, PyValueEx "")
   , (nicIpRouted, PyValueEx "")
   , (nicIp6Routed, PyValueEx "")
-  , (nicGateway6, PyValueEx "")
+  , (nicRoutedGateway, PyValueEx "")
+  , (nicRoutedGateway6, PyValueEx "")
   , (nicRpf, PyValueEx "")
   ]
 
