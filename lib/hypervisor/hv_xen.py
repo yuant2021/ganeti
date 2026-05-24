@@ -641,6 +641,12 @@ class XenHypervisor(hv_base.BaseHypervisor):
     data.write("MODE=%s\n" % nic.nicparams[constants.NIC_MODE])
     data.write("LINK=%s\n" % nic.nicparams[constants.NIC_LINK])
     data.write("VLAN=%s\n" % nic.nicparams[constants.NIC_VLAN])
+    if nic.nicparams.get(constants.NIC_IP_ROUTED):
+      data.write("IP_ROUTED=%s\n" % nic.nicparams[constants.NIC_IP_ROUTED])
+    if nic.nicparams.get(constants.NIC_IP6_ROUTED):
+      data.write("IP6_ROUTED=%s\n" % nic.nicparams[constants.NIC_IP6_ROUTED])
+    if nic.nicparams.get(constants.NIC_GATEWAY6):
+      data.write("GATEWAY6=%s\n" % nic.nicparams[constants.NIC_GATEWAY6])
 
     try:
       utils.WriteFile(cfg_file, data=data.getvalue())

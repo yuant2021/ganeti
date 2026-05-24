@@ -387,14 +387,17 @@ $(makeJSONInstance ''DiskAccess)
 
 -- | NIC modification definition.
 $(buildObject "INicParams" "inic"
-  [ optionalField $ simpleField C.inicMac    [t| NonEmptyString |]
-  , optionalField $ simpleField C.inicIp     [t| String         |]
-  , optionalField $ simpleField C.inicMode   [t| NonEmptyString |]
-  , optionalField $ simpleField C.inicLink   [t| NonEmptyString |]
-  , optionalField $ simpleField C.inicName   [t| NonEmptyString |]
-  , optionalField $ simpleField C.inicVlan   [t| String         |]
-  , optionalField $ simpleField C.inicBridge [t| NonEmptyString |]
-  , optionalField $ simpleField C.inicNetwork [t| NonEmptyString |]
+  [ optionalField $ simpleField C.inicMac      [t| NonEmptyString |]
+  , optionalField $ simpleField C.inicIp       [t| String         |]
+  , optionalField $ simpleField C.inicMode     [t| NonEmptyString |]
+  , optionalField $ simpleField C.inicLink     [t| NonEmptyString |]
+  , optionalField $ simpleField C.inicName     [t| NonEmptyString |]
+  , optionalField $ simpleField C.inicVlan     [t| String         |]
+  , optionalField $ simpleField C.inicBridge   [t| NonEmptyString |]
+  , optionalField $ simpleField C.inicNetwork  [t| NonEmptyString |]
+  , optionalField $ simpleField C.inicIpRouted [t| String         |]
+  , optionalField $ simpleField C.inicIp6Routed [t| String        |]
+  , optionalField $ simpleField C.inicGateway6 [t| String         |]
   ])
 
 deriving instance Ord INicParams

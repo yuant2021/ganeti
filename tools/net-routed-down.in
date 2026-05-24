@@ -29,3 +29,55 @@
 
 source @PKGLIBDIR@/net-common
 
+# Clean up legacy single-IP route
+if [ -n "$IP" ]; then
+    if [ -n "$LINK" ]; then
+        ip route del $IP table $LINK dev $INTERFACE 2>/dev/null || true
+    else
+        ip route del $IP dev $INTERFACE 2>/dev/null || true
+    fi
+fi
+
+# Clean up multi-IPv4 routed addresses
+if [ -n "$IP_ROUTED" ]; then
+    IFS=';' read -ra ADDR_LIST <<< "$IP_ROUTED"
+    for addr in "${ADDR_LIST[@]}"; do
+        addr=$(echo "$addr" | xargs)
+        [ -z "$addr" ] && continue
+        if [ -n "$LINK" ]; then
+            ip route del $addr table $LINK dev $INTERFACE 2>/dev/null || true
+        else
+            ip route del $addr dev $INTERFACE 2>/dev/null || true
+        fi
+    done
+fi
+
+# Clean up multi-IPv6 routed addresses
+if [ -n "$IP6_ROUTED" ]; then
+    IFS=';' read -ra ADDR6_LIST <<< "$IP6_ROUTED"
+    for addr6 in "${ADDR6_LIST[@]}"; do
+        addr6=$(echo "$addr6" | xargs)
+        [ -z "$addr6" ] && continue
+        if [ -n "$LINK" ]; then
+            ip -6 route del $addr6 table $LINK dev $INTERFACE 2>/dev/null || true
+        else
+            ip -6 route del $addr6 dev $INTERFACE 2>/dev/null || true
+        fi
+    done
+fi
+
+# Clean up IPv6 default gateway route
+if [ -n "$GATEWAY6" ]; then
+    if [ -n "$LINK" ]; then
+        ip -6 route del default via $GATEWAY6 table $LINK dev $INTERFACE 2>/dev/null || true
+    else
+        ip -6 route del default via $GATEWAY6 dev $INTERFACE 2>/dev/null || true
+    fi
+fi
+
+# Clean up policy routing rules
+if [ -n "$LINK" ]; then
+    while ip rule del dev $INTERFACE 2>/dev/null; do :; done
+fi
+
+ip link set $INTERFACE down 2>/dev/null || true

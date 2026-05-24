@@ -31,19 +31,62 @@ source @PKGLIBDIR@/net-common
 
 ip link set $INTERFACE up
 
-if [ -z "$IP" ]; then
+# When ip-routed or ip6-routed is set, the legacy IP field is optional
+if [ -z "$IP" ] && [ -z "$IP_ROUTED" ] && [ -z "$IP6_ROUTED" ]; then
     echo "Routed NIC but no IP address specified"
     exit 1
 fi
 
-# Route traffic targeted at the IP to the interface
+# Set up policy routing table if LINK is specified
 if [ -n "$LINK" ]; then
-    while ip rule del dev $INTERFACE; do :; done
+    while ip rule del dev $INTERFACE 2>/dev/null; do :; done
     ip rule add dev $INTERFACE table $LINK
-    ip route replace $IP table $LINK proto static dev $INTERFACE
+fi
 
-else
-    ip route replace $IP proto static dev $INTERFACE
+# Legacy single-IP route (backward compatible)
+if [ -n "$IP" ]; then
+    if [ -n "$LINK" ]; then
+        ip route replace $IP table $LINK proto static dev $INTERFACE
+    else
+        ip route replace $IP proto static dev $INTERFACE
+    fi
+fi
+
+# Multi-IPv4 routed addresses (semicolon-separated, CIDR notation)
+if [ -n "$IP_ROUTED" ]; then
+    IFS=';' read -ra ADDR_LIST <<< "$IP_ROUTED"
+    for addr in "${ADDR_LIST[@]}"; do
+        addr=$(echo "$addr" | xargs)
+        [ -z "$addr" ] && continue
+        if [ -n "$LINK" ]; then
+            ip route replace $addr table $LINK proto static dev $INTERFACE
+        else
+            ip route replace $addr proto static dev $INTERFACE
+        fi
+    done
+fi
+
+# Multi-IPv6 routed addresses (semicolon-separated, CIDR notation)
+if [ -n "$IP6_ROUTED" ]; then
+    IFS=';' read -ra ADDR6_LIST <<< "$IP6_ROUTED"
+    for addr6 in "${ADDR6_LIST[@]}"; do
+        addr6=$(echo "$addr6" | xargs)
+        [ -z "$addr6" ] && continue
+        if [ -n "$LINK" ]; then
+            ip -6 route replace $addr6 table $LINK proto static dev $INTERFACE
+        else
+            ip -6 route replace $addr6 proto static dev $INTERFACE
+        fi
+    done
+fi
+
+# IPv6 default gateway for the interface (optional)
+if [ -n "$GATEWAY6" ]; then
+    if [ -n "$LINK" ]; then
+        ip -6 route replace default via $GATEWAY6 table $LINK proto static dev $INTERFACE
+    else
+        ip -6 route replace default via $GATEWAY6 proto static dev $INTERFACE
+    fi
 fi
 
 # Allow routing and arp proxying, or ndp proxying (IPv6)

@@ -4348,6 +4348,15 @@ def OSEnvironment(instance, inst_os, debug=0):
       result["NIC_%d_BRIDGE" % idx] = nic.nicparams[constants.NIC_LINK]
     if nic.nicparams[constants.NIC_LINK]:
       result["NIC_%d_LINK" % idx] = nic.nicparams[constants.NIC_LINK]
+    if nic.nicparams.get(constants.NIC_IP_ROUTED):
+      result["NIC_%d_IP_ROUTED" % idx] = \
+        nic.nicparams[constants.NIC_IP_ROUTED]
+    if nic.nicparams.get(constants.NIC_IP6_ROUTED):
+      result["NIC_%d_IP6_ROUTED" % idx] = \
+        nic.nicparams[constants.NIC_IP6_ROUTED]
+    if nic.nicparams.get(constants.NIC_GATEWAY6):
+      result["NIC_%d_GATEWAY6" % idx] = \
+        nic.nicparams[constants.NIC_GATEWAY6]
     if nic.netinfo:
       nobj = objects.Network.FromDict(nic.netinfo)
       result.update(nobj.HooksDict("NIC_%d_" % idx))

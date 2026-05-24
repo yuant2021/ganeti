@@ -554,10 +554,14 @@ class LUInstanceSetParams(LogicalUnit):
 
     elif new_mode == constants.NIC_MODE_ROUTED:
       ip = params.get(constants.INIC_IP, old_ip)
-      if ip is None and not new_net_uuid:
+      has_routed_ips = (
+        new_filled_params.get(constants.NIC_IP_ROUTED) or
+        new_filled_params.get(constants.NIC_IP6_ROUTED))
+      if ip is None and not new_net_uuid and not has_routed_ips:
         raise errors.OpPrereqError("Cannot set the NIC IP address to None"
                                    " on a routed NIC if not attached to a"
-                                   " network", errors.ECODE_INVAL)
+                                   " network and no ip-routed/ip6-routed"
+                                   " specified", errors.ECODE_INVAL)
 
     elif new_mode == constants.NIC_MODE_OVS:
       # TODO: check OVS link

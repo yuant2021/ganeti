@@ -1886,6 +1886,16 @@ def _GetInstanceNetworkFields():
   nic_mode_fn = _GetInstNicParam(constants.NIC_MODE)
   nic_link_fn = _GetInstNicParam(constants.NIC_LINK)
 
+  def _GetInstNicParamOpt(param_name):
+    def fn(ctx, index, _):
+      assert len(ctx.inst_nicparams) >= index
+      return ctx.inst_nicparams[index].get(param_name, _FS_UNAVAIL)
+    return fn
+
+  nic_ip_routed_fn = _GetInstNicParamOpt(constants.NIC_IP_ROUTED)
+  nic_ip6_routed_fn = _GetInstNicParamOpt(constants.NIC_IP6_ROUTED)
+  nic_gateway6_fn = _GetInstNicParamOpt(constants.NIC_GATEWAY6)
+
   fields = [
     # All NICs
     (_MakeField("nic.count", "NICs", QFT_NUMBER,
@@ -1922,7 +1932,22 @@ def _GetInstanceNetworkFields():
      lambda ctx, inst: [nic.network for nic in inst.nics]),
     (_MakeField("nic.networks.names", "NIC_networks_names", QFT_OTHER,
                 "List containing each interface's network"),
-     IQ_NETWORKS, 0, _GetInstAllNicNetworkNames)
+     IQ_NETWORKS, 0, _GetInstAllNicNetworkNames),
+    (_MakeField("nic.ips.routed", "NIC_IPs_Routed", QFT_OTHER,
+                "List containing each interface's routed IPv4 addresses"),
+     IQ_CONFIG, 0,
+     lambda ctx, inst: [nicp.get(constants.NIC_IP_ROUTED, None)
+                        for nicp in ctx.inst_nicparams]),
+    (_MakeField("nic.ip6s.routed", "NIC_IP6s_Routed", QFT_OTHER,
+                "List containing each interface's routed IPv6 addresses"),
+     IQ_CONFIG, 0,
+     lambda ctx, inst: [nicp.get(constants.NIC_IP6_ROUTED, None)
+                        for nicp in ctx.inst_nicparams]),
+    (_MakeField("nic.gateways6", "NIC_Gateways6", QFT_OTHER,
+                "List containing each interface's IPv6 gateway"),
+     IQ_CONFIG, 0,
+     lambda ctx, inst: [nicp.get(constants.NIC_GATEWAY6, None)
+                        for nicp in ctx.inst_nicparams]),
     ]
 
   # NICs by number
@@ -1959,6 +1984,15 @@ def _GetInstanceNetworkFields():
       (_MakeField("nic.network.name/%s" % i, "NicNetworkName/%s" % i, QFT_TEXT,
                   "Network name of %s network interface" % numtext),
        IQ_NETWORKS, 0, _GetInstNic(i, _GetInstNicNetworkName)),
+      (_MakeField("nic.ip.routed/%s" % i, "NicIPRouted/%s" % i, QFT_TEXT,
+                  "Routed IPv4 addresses of %s network interface" % numtext),
+       IQ_CONFIG, 0, _GetInstNic(i, nic_ip_routed_fn)),
+      (_MakeField("nic.ip6.routed/%s" % i, "NicIP6Routed/%s" % i, QFT_TEXT,
+                  "Routed IPv6 addresses of %s network interface" % numtext),
+       IQ_CONFIG, 0, _GetInstNic(i, nic_ip6_routed_fn)),
+      (_MakeField("nic.gateway6/%s" % i, "NicGateway6/%s" % i, QFT_TEXT,
+                  "IPv6 gateway of %s network interface" % numtext),
+       IQ_CONFIG, 0, _GetInstNic(i, nic_gateway6_fn)),
       ])
 
   aliases = [

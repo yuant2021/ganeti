@@ -251,6 +251,15 @@ def ConfigureNIC(cmd, instance, seq, nic, tap, extra_env=None):
   if constants.NIC_VLAN in nic.nicparams:
     env["VLAN"] = nic.nicparams[constants.NIC_VLAN]
 
+  if nic.nicparams.get(constants.NIC_IP_ROUTED):
+    env["IP_ROUTED"] = nic.nicparams[constants.NIC_IP_ROUTED]
+
+  if nic.nicparams.get(constants.NIC_IP6_ROUTED):
+    env["IP6_ROUTED"] = nic.nicparams[constants.NIC_IP6_ROUTED]
+
+  if nic.nicparams.get(constants.NIC_GATEWAY6):
+    env["GATEWAY6"] = nic.nicparams[constants.NIC_GATEWAY6]
+
   if nic.network:
     n = objects.Network.FromDict(nic.netinfo)
     env.update(n.HooksDict())
@@ -305,6 +314,15 @@ def DeConfigureNIC(cmd, instance, seq, nic, tap):
 
   if constants.NIC_VLAN in nic.nicparams:
     env["VLAN"] = nic.nicparams[constants.NIC_VLAN]
+
+  if nic.nicparams.get(constants.NIC_IP_ROUTED):
+    env["IP_ROUTED"] = nic.nicparams[constants.NIC_IP_ROUTED]
+
+  if nic.nicparams.get(constants.NIC_IP6_ROUTED):
+    env["IP6_ROUTED"] = nic.nicparams[constants.NIC_IP6_ROUTED]
+
+  if nic.nicparams.get(constants.NIC_GATEWAY6):
+    env["GATEWAY6"] = nic.nicparams[constants.NIC_GATEWAY6]
 
   if nic.network:
     n = objects.Network.FromDict(nic.netinfo)

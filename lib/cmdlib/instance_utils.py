@@ -1232,6 +1232,9 @@ def ComputeNics(op, cluster, default_ip, cfg, ec_id):
     link = nic.get(constants.NIC_LINK, None)
     ip = nic.get(constants.INIC_IP, None)
     vlan = nic.get(constants.INIC_VLAN, None)
+    ip_routed = nic.get(constants.INIC_IP_ROUTED, None)
+    ip6_routed = nic.get(constants.INIC_IP6_ROUTED, None)
+    gateway6 = nic.get(constants.INIC_GATEWAY6, None)
 
     if net is None or net.lower() == constants.VALUE_NONE:
       net = None
@@ -1266,8 +1269,10 @@ def ComputeNics(op, cluster, default_ip, cfg, ec_id):
       nic_ip = ip
 
     # TODO: check the ip address for uniqueness
-    if nic_mode == constants.NIC_MODE_ROUTED and not nic_ip and not net:
-      raise errors.OpPrereqError("Routed nic mode requires an ip address"
+    if nic_mode == constants.NIC_MODE_ROUTED and not nic_ip and not net \
+        and not ip_routed and not ip6_routed:
+      raise errors.OpPrereqError("Routed nic mode requires an ip address,"
+                                 " ip-routed, or ip6-routed"
                                  " if not attached to a network",
                                  errors.ECODE_INVAL)
 
@@ -1292,6 +1297,12 @@ def ComputeNics(op, cluster, default_ip, cfg, ec_id):
       nicparams[constants.NIC_LINK] = link
     if vlan:
       nicparams[constants.NIC_VLAN] = vlan
+    if ip_routed:
+      nicparams[constants.NIC_IP_ROUTED] = ip_routed
+    if ip6_routed:
+      nicparams[constants.NIC_IP6_ROUTED] = ip6_routed
+    if gateway6:
+      nicparams[constants.NIC_GATEWAY6] = gateway6
 
     check_params = cluster.SimpleFillNIC(nicparams)
     objects.NIC.CheckParameterSyntax(check_params)
