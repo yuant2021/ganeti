@@ -1895,6 +1895,7 @@ def _GetInstanceNetworkFields():
   nic_ip_routed_fn = _GetInstNicParamOpt(constants.NIC_IP_ROUTED)
   nic_ip6_routed_fn = _GetInstNicParamOpt(constants.NIC_IP6_ROUTED)
   nic_gateway6_fn = _GetInstNicParamOpt(constants.NIC_GATEWAY6)
+  nic_rpf_fn = _GetInstNicParamOpt(constants.NIC_RPF)
 
   fields = [
     # All NICs
@@ -1948,6 +1949,11 @@ def _GetInstanceNetworkFields():
      IQ_CONFIG, 0,
      lambda ctx, inst: [nicp.get(constants.NIC_GATEWAY6, None)
                         for nicp in ctx.inst_nicparams]),
+    (_MakeField("nic.rpfs", "NIC_RPFs", QFT_OTHER,
+                "List containing each interface's rp_filter setting"),
+     IQ_CONFIG, 0,
+     lambda ctx, inst: [nicp.get(constants.NIC_RPF, None)
+                        for nicp in ctx.inst_nicparams]),
     ]
 
   # NICs by number
@@ -1993,6 +1999,9 @@ def _GetInstanceNetworkFields():
       (_MakeField("nic.gateway6/%s" % i, "NicGateway6/%s" % i, QFT_TEXT,
                   "IPv6 gateway of %s network interface" % numtext),
        IQ_CONFIG, 0, _GetInstNic(i, nic_gateway6_fn)),
+      (_MakeField("nic.rpf/%s" % i, "NicRPF/%s" % i, QFT_TEXT,
+                  "rp_filter setting of %s network interface" % numtext),
+       IQ_CONFIG, 0, _GetInstNic(i, nic_rpf_fn)),
       ])
 
   aliases = [

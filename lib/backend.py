@@ -4357,6 +4357,8 @@ def OSEnvironment(instance, inst_os, debug=0):
     if nic.nicparams.get(constants.NIC_GATEWAY6):
       result["NIC_%d_GATEWAY6" % idx] = \
         nic.nicparams[constants.NIC_GATEWAY6]
+    if nic.nicparams.get(constants.NIC_RPF):
+      result["NIC_%d_RPF" % idx] = nic.nicparams[constants.NIC_RPF]
     if nic.netinfo:
       nobj = objects.Network.FromDict(nic.netinfo)
       result.update(nobj.HooksDict("NIC_%d_" % idx))

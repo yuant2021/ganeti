@@ -1235,6 +1235,7 @@ def ComputeNics(op, cluster, default_ip, cfg, ec_id):
     ip_routed = nic.get(constants.INIC_IP_ROUTED, None)
     ip6_routed = nic.get(constants.INIC_IP6_ROUTED, None)
     gateway6 = nic.get(constants.INIC_GATEWAY6, None)
+    rpf = nic.get(constants.INIC_RPF, None)
 
     if net is None or net.lower() == constants.VALUE_NONE:
       net = None
@@ -1303,6 +1304,8 @@ def ComputeNics(op, cluster, default_ip, cfg, ec_id):
       nicparams[constants.NIC_IP6_ROUTED] = ip6_routed
     if gateway6:
       nicparams[constants.NIC_GATEWAY6] = gateway6
+    if rpf:
+      nicparams[constants.NIC_RPF] = rpf
 
     check_params = cluster.SimpleFillNIC(nicparams)
     objects.NIC.CheckParameterSyntax(check_params)

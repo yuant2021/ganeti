@@ -2532,6 +2532,9 @@ nicIp6Routed = "ip6-routed"
 nicGateway6 :: String
 nicGateway6 = "gateway6"
 
+nicRpf :: String
+nicRpf = "rpf"
+
 nicsParameterTypes :: Map String VType
 nicsParameterTypes =
   Map.fromList [(nicMode, vtypeString),
@@ -2539,7 +2542,8 @@ nicsParameterTypes =
                 (nicVlan, vtypeString),
                 (nicIpRouted, vtypeString),
                 (nicIp6Routed, vtypeString),
-                (nicGateway6, vtypeString)]
+                (nicGateway6, vtypeString),
+                (nicRpf, vtypeString)]
 
 nicsParameters :: FrozenSet String
 nicsParameters = ConstantUtils.mkSet (Map.keys nicsParameterTypes)
@@ -2661,6 +2665,9 @@ inicIp6Routed = "ip6-routed"
 inicGateway6 :: String
 inicGateway6 = "gateway6"
 
+inicRpf :: String
+inicRpf = "rpf"
+
 inicParamsTypes :: Map String VType
 inicParamsTypes =
   Map.fromList [(inicBridge, VTypeMaybeString),
@@ -2673,7 +2680,8 @@ inicParamsTypes =
                 (inicVlan, VTypeMaybeString),
                 (inicIpRouted, VTypeMaybeString),
                 (inicIp6Routed, VTypeMaybeString),
-                (inicGateway6, VTypeMaybeString)]
+                (inicGateway6, VTypeMaybeString),
+                (inicRpf, VTypeMaybeString)]
 
 inicParams :: FrozenSet String
 inicParams = ConstantUtils.mkSet (Map.keys inicParamsTypes)
@@ -4375,6 +4383,7 @@ niccDefaults =
   , (nicIpRouted, PyValueEx "")
   , (nicIp6Routed, PyValueEx "")
   , (nicGateway6, PyValueEx "")
+  , (nicRpf, PyValueEx "")
   ]
 
 -- | All of the following values are quite arbitrary - there are no

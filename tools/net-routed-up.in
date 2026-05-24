@@ -99,3 +99,8 @@ if [ -d "/proc/sys/net/ipv6/conf/$INTERFACE" ]; then
     echo 1 > /proc/sys/net/ipv6/conf/$INTERFACE/proxy_ndp
     echo 1 > /proc/sys/net/ipv6/conf/$INTERFACE/forwarding
 fi
+
+# Set rp_filter (reverse path filtering) if specified (0=off, 1=strict, 2=loose)
+if [ -n "$RPF" ] && [ -f "/proc/sys/net/ipv4/conf/$INTERFACE/rp_filter" ]; then
+    echo $RPF > /proc/sys/net/ipv4/conf/$INTERFACE/rp_filter
+fi

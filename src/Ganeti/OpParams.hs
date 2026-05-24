@@ -398,6 +398,7 @@ $(buildObject "INicParams" "inic"
   , optionalField $ simpleField C.inicIpRouted [t| String         |]
   , optionalField $ simpleField C.inicIp6Routed [t| String        |]
   , optionalField $ simpleField C.inicGateway6 [t| String         |]
+  , optionalField $ simpleField C.inicRpf     [t| String         |]
   ])
 
 deriving instance Ord INicParams

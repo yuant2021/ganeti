@@ -260,6 +260,9 @@ def ConfigureNIC(cmd, instance, seq, nic, tap, extra_env=None):
   if nic.nicparams.get(constants.NIC_GATEWAY6):
     env["GATEWAY6"] = nic.nicparams[constants.NIC_GATEWAY6]
 
+  if nic.nicparams.get(constants.NIC_RPF):
+    env["RPF"] = nic.nicparams[constants.NIC_RPF]
+
   if nic.network:
     n = objects.Network.FromDict(nic.netinfo)
     env.update(n.HooksDict())
@@ -323,6 +326,9 @@ def DeConfigureNIC(cmd, instance, seq, nic, tap):
 
   if nic.nicparams.get(constants.NIC_GATEWAY6):
     env["GATEWAY6"] = nic.nicparams[constants.NIC_GATEWAY6]
+
+  if nic.nicparams.get(constants.NIC_RPF):
+    env["RPF"] = nic.nicparams[constants.NIC_RPF]
 
   if nic.network:
     n = objects.Network.FromDict(nic.netinfo)
