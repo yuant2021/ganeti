@@ -92,12 +92,12 @@ fi
 
 # Allow routing and arp proxying, or ndp proxying (IPv6)
 if [ -d "/proc/sys/net/ipv4/conf/$INTERFACE" ]; then
-    echo 1 > /proc/sys/net/ipv4/conf/$INTERFACE/proxy_arp
+    echo 0 > /proc/sys/net/ipv4/conf/$INTERFACE/proxy_arp
     echo 1 > /proc/sys/net/ipv4/conf/$INTERFACE/forwarding
 fi
 
 if [ -d "/proc/sys/net/ipv6/conf/$INTERFACE" ]; then
-    echo 1 > /proc/sys/net/ipv6/conf/$INTERFACE/proxy_ndp
+    echo 0 > /proc/sys/net/ipv6/conf/$INTERFACE/proxy_ndp
     echo 1 > /proc/sys/net/ipv6/conf/$INTERFACE/forwarding
 fi
 
